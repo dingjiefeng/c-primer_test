@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <vector>
 #include <string>
+#include <numeric>
 
 using namespace std;
 void elimDups(vector<string> &svec)
@@ -15,14 +16,16 @@ void biggies(std::vector<string> &v,
 			std::vector<string>::size_type sz)
 {
 	elimDups(v);
-	stable_sort(v.begin(), v.end(),
-	 [] (const string &a, const string &b) {return a.size() < b.size(); });
+	//stable_sort(v.begin(), v.end(),
+	// [] (const string &a, const string &b) {return a.size() < b.size(); });
 	
-	auto wc = find_if(v.begin(), v.end(), 
-		[sz] (const string &a) { return a.size()>=sz; });
-	auto cnt = v.end() - wc;
+	//auto wc = find_if(v.begin(), v.end(), 
+	//	[sz] (const string &a) { return a.size()>=sz; });
+	//利用partition代替find_if
+	auto wc = partition(v.begin(), v.end(), [sz] (const string &a) { return a.size()>=sz;} );
+	auto cnt = wc-v.begin();
 	cout << cnt << "个" << "长度大于等于" << sz << endl;
-	for_each(wc, v.end(), 
+	for_each(v.begin(), wc, 
 		[] (const string &s) {cout << s << " ";});
 	cout << endl;
 
