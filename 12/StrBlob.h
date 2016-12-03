@@ -35,7 +35,7 @@ public:
 	StrBlobPtr end();
 private:
 	shared_ptr<vector<string>> data;
-	void check(size_type i,const string msg) const;
+	void check(size_type i,const string &msg) const;
 
 };
 
@@ -43,7 +43,7 @@ StrBlob::StrBlob():data(make_shared<vector<string>>()) {};
 
 StrBlob::StrBlob(initializer_list<string> il):
 				data(make_shared<vector<string>>(il)) {};
-void StrBlob::check(size_type i,const string msg) const
+void StrBlob::check(size_type i,const string & msg) const
 {
 	if(i>=data->size())
 		throw out_of_range(msg);
@@ -56,7 +56,7 @@ string& StrBlob::front()
 	return data->front();
 }
 //the version of const front
-string& const StrBlob::front ()
+const string& StrBlob::front () const
 {
 	check(0,"front on empty StrBlob");
 	return data->front();
@@ -66,7 +66,7 @@ string& StrBlob::back()
 	check(0,"back on empty StrBlob");
 	return data->back();
 }
-string& const StrBlob::back()
+const string& StrBlob::back() const
 {
 	check(0,"back on empty StrBlob");
 	return data->back();
@@ -88,7 +88,7 @@ void StrBlob::pop_back()
 
 class StrBlobPtr
 {
-	friend eq(const StrBlobPtr&, const StrBlobPtr&);
+	friend bool eq(const StrBlobPtr&, const StrBlobPtr&);
 public:
 	StrBlobPtr(): curr(0) {};
 	StrBlobPtr(StrBlob &a, size_t sz = 0): wptr(a.data), curr(sz) {};
@@ -96,14 +96,12 @@ public:
 	StrBlobPtr & incr();
 	StrBlobPtr & decr();
 private:
-	shared_ptr<vector<string>>
-		check(size_t, const string&) const;
+	shared_ptr<vector<string>> check(size_t i, const string& msg) const;
 
 	weak_ptr<vector<string>> wptr;
 	size_t curr;//current place
 }
-shared_ptr<vector<string>>
-StrBlobPtr::check(size_t i, const string& msg) const
+shared_ptr<vector<string>> StrBlobPtr::check(size_t i, const string& msg) const
 {
 	auto ret = wptr.lock();
 	if(!ret)
