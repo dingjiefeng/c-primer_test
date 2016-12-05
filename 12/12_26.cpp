@@ -16,6 +16,6 @@ int main()
 		cout << *(p+i) << endl;
 	while(q != p)
 		alloc.destroy(--q);
-
+	alloc.deallocate(p,n);
 	return 0;
 }
