@@ -5,15 +5,21 @@
 class Employee
 {
 public:
-	Employee() = default;
-	Employee(const std::string &n)
+	Employee() {myid = id++;};
+	Employee(const std::string &n) {myid = id++;name = n;};
+	int get_id() {return myid;}
+	const std::string get_name() {return name;};
 private:
 	std::string name;
-	int id;
-}
-
+	static int id;
+	int myid;
+};
+int Employee::id = 0;
 
 int main()
 {
+	Employee myEmployee("jeff");
+	std::cout << myEmployee.get_name() << " "
+	<< myEmployee.get_id() << std::endl;
 	return 0;
 }
