@@ -14,7 +14,10 @@ public:
 	virtual double net_price(std::size_t n) const { return n*price;}
 
 	virtual ~Quote() = default;
-	
+	virtual debug() 
+	{
+		std::cout << "bookNo=" << bookNo << "price=" << price << std::endl;
+	}
 private:
 	std::string bookNo;
 private:
